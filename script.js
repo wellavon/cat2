@@ -119,6 +119,19 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error('Error adding product:', error);
             }
+
+            try {
+                const response = await fetch('/.netlify/functions/products');
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    products = await response.json();
+    renderProducts(products);
+} catch (error) {
+    console.error('Error fetching products:', error);
+    // Отобразите сообщение об ошибке пользователю
+    alert('Failed to load products. Please try again later.');
+}
         });
     }
 
@@ -220,6 +233,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
           console.error('Error deleting product:', error);
         }
+        try {
+    const response = await fetch('/.netlify/functions/products');
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    products = await response.json();
+    renderProducts(products);
+} catch (error) {
+    console.error('Error fetching products:', error);
+    // Отобразите сообщение об ошибке пользователю
+    alert('Failed to load products. Please try again later.');
+}
     }
 
     // Функция для закрытия модального окна
