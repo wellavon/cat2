@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кошка-привереда</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="apple-touch-icon.png" type="image/png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Lobster+Two:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1>Кошка-привереда</h1>
+        <p class="quote">"Это я не ем, я не козел"</p>
+    </header>
+
+    <section id="buttons">
+        <button id="description-button">Описание пометок</button>
+        <button id="add-product-button">Добавить продукт</button>
+    </section>
+
+    <section id="search-bar">
+        <input type="text" id="search-input" placeholder="Поиск продукта...">
+    </section>
+
+    <section id="product-list">
+        <ul id="products">
+            <!-- Продукты будут добавлены сюда через JavaScript -->
+        </ul>
+    </section>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modal-body">
+                <!-- Контент модального окна будет добавлен сюда через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

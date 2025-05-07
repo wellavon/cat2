@@ -1,0 +1,294 @@
+/* Общие стили */
+body {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://i.pinimg.com/736x/59/eb/41/59eb41e080c384009eb6a7cbe2fdb890--baby-bears-paper-patterns.jpg');
+    color: #616161; /* Мягкий серый цвет для текста */
+    line-height: 1.4; /* Уменьшенный интервал между строками */
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Подключение шрифта Mochiy Pop P One */
+@import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap');
+
+/* Анимация кошачьих следов */
+@keyframes catWalk {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100px 100px;
+    }
+}
+
+/* Убираем лишние отступы */
+#search-bar,
+#product-list,
+.modal-content {
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    margin: 15px; /* Уменьшенный отступ */
+}
+
+header .quote {
+    border-radius: 0px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    margin: 5px; /* Уменьшенный отступ */
+}
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Lobster Two', cursive; 
+    font-size: 3em;
+    color: #e91e63;
+    margin-bottom: 5px; /* Уменьшенный отступ */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+header .quote {
+    font-family: 'Caveat Brush', cursive;
+    font-style: italic;
+    color: #757575;
+    font-size: 1.2em;
+}
+
+/* Поисковая строка */
+#search-bar {
+    text-align: center;
+}
+
+#search-input {
+    padding: 12px; /* Уменьшенный отступ */
+    width: 70%;
+    border: 2px solid #f06292;
+    border-radius: 30px;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+#search-input:focus {
+    outline: none;
+    border-color: #f06292;
+    box-shadow: 0 0 10px rgba(240, 98, 146, 0.5);
+}
+
+/* Список продуктов */
+#product-list {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#products {
+    list-style: none;
+    padding: 0;
+    width: 80%;
+    max-width: 800px;
+}
+
+#products li {
+    padding: 15px; /* Уменьшенный отступ */
+    margin-bottom: 10px; /* Уменьшенный отступ */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 30px;
+    border: 2px solid #f7c9d8;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background-image: url('https://i.imgur.com/K39U9Q0.png');
+    background-size: 100px 100px;
+    animation: catWalk 10s linear infinite;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+#products li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+#products li::before {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    width: 80px;
+    height: 80px;
+    background-image: url('https://i.imgur.com/cK25Q7L.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    transform: rotate(-20deg);
+}
+
+#products li span:first-child {
+    font-size: 1.2em;
+    font-weight: 600;
+    flex-grow: 1;
+    margin-right: 10px; /* Уменьшенный отступ */
+}
+
+/* Метки */
+.label {
+    padding: 8px 15px; /* Уменьшенный отступ */
+    border-radius: 30px;
+    color: white;
+    font-weight: 500;
+    font-size: 1em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.label.люблю {
+    background-color: #81c784;
+}
+
+.label.хорошо {
+    background-color: #f7b655;
+    color: #fefdfd;
+}
+
+.label.сойдет {
+    background-color: #f08f6b;
+}
+
+.label.ужасно {
+    background-color: #e57373;
+}
+
+/* Кнопки (убираем div #buttons) */
+#buttons {
+    text-align: center;
+    margin-bottom: 30px; /* Чуть меньше отступ */
+}
+
+button,
+#floating-button-container button { /* Применяем стили к кнопкам в обоих контейнерах */
+    padding: 12px 30px; /* Уменьшенный отступ */
+    border: none;
+    border-radius: 40px;
+    font-size: 1.1em; /* Уменьшенный шрифт */
+    font-weight: 500;
+    color: #fff;
+    background-color: #f06292;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    margin: 8px; /* Уменьшенный отступ */
+}
+
+button:hover,
+#floating-button-container button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    margin: 10% auto;
+    width: 80%;
+    border-radius: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.close {
+    color: #757575;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #e91e63;
+    text-decoration: none;
+}
+
+/* Стили для форм в модальном окне */
+#modal-body form {
+    display: flex;
+    flex-direction: column;
+}
+
+#modal-body label {
+    margin-bottom: 8px; /* Уменьшенный отступ */
+    font-weight: 600;
+    color: #757575;
+}
+
+#modal-body input[type="text"],
+#modal-body select {
+    padding: 12px; /* Уменьшенный отступ */
+    margin-bottom: 15px; /* Уменьшенный отступ */
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    font-size: 1.1em;
+}
+
+#modal-body button[type="submit"] {
+    padding: 12px 30px; /* Уменьшенный отступ */
+    border: none;
+    border-radius: 40px;
+    font-size: 1.1em; /* Уменьшенный шрифт */
+    font-weight: 500;
+    color: #fff;
+    background-color: #f06292;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Анимация появления модального окна */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Контейнер для плавающей кнопки */
+#floating-button-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
