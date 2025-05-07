@@ -3,4 +3,10 @@
   publish = "."
 
 [dev]
-  functionsPort = 8888
+port = 4000
+functionsPort = 8888
+
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
