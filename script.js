@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Функция для открытия модального окна добавления продукта
     function openAddProductModal() {
-        modalBody.innerHTML = `
+  modalBody.innerHTML = `
             <h3>Добавить продукт</h3>
             <form id="add-product-form">
                 <label for="product-name">Название продукта:</label>
@@ -85,46 +85,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="submit">Сохранить продукт</button>
             </form>
         `;
-        modal.style.display = 'block';
+  modal.style.display = 'block';
 
-        const addProductForm = document.getElementById('add-product-form');
-        addProductForm.addEventListener('submit', async (event) => {
-            event.preventDefault(); // Предотвращаем перезагрузку страницы
+  const addProductForm = document.getElementById('add-product-form');
+  addProductForm.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Предотвращаем перезагрузку страницы
 
-            const productName = document.getElementById('product-name').value;
-            const productLabel = document.getElementById('product-label').value;
+    const productName = document.getElementById('product-name').value;
+    const productLabel = document.getElementById('product-label').value;
 
-            const newProduct = {
-                name: productName,
-                label: productLabel
-            };
+    const newProduct = {
+      name: productName,
+      label: productLabel
+    };
 
-            try {
-                console.log("Выполняется POST запрос для добавления продукта"); // Добавлено для отладки
-                const response = await fetch('/.netlify/functions/add-product', { // Вызываем add-product
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(newProduct)
-                });
+    try {
+      console.log("Выполняется POST запрос для добавления продукта"); // Добавлено для отладки
+      const response = await fetch('/.netlify/functions/add-product', { // Вызываем add-product
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newProduct)
+      });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-                const createdProduct = await response.json();
-                products.push(createdProduct);
-                renderProducts(products); // Показываем список продуктов, а не только, что создали
+      await response.json();
+      fetchProducts(); // Просто перезагружаем список продуктов
 
-                closeModal();
+      closeModal();
 
-            } catch (error) {
-                console.error('Error adding product:', error);
-                alert('Failed to add product. Please try again later.');
-            }
-        });
+    } catch (error) {
+      console.error('Error adding product:', error);
+      alert('Failed to add product. Please try again later.');
     }
+  });
+}
 
     // Функция для открытия модального окна редактирования продукта
     function openProductModal(product) {
