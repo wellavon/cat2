@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchProducts() {
         try {
             console.log("Выполняется fetchProducts"); // Добавлено для отладки
-            const response = await fetch('/.netlify/functions/products'); // Замените URL, если необходимо
+            const response = await fetch('/.netlify/functions/products.js'); // Замените URL, если необходимо
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
