@@ -15,10 +15,20 @@ exports.handler = async (event, context) => {
     const products = await collection.find({}).toArray();
 
     // Convert _id ObjectId to string for frontend compatibility
-    const productsWithStringId = products.map(product => ({
-      ...product,
-      _id: product._id.toString()
-    }));
+    const productsWithStringId = products.map(product => {
+      try {
+        return {
+          ...product,
+          _id: product._id.toString()
+        };
+      } catch (error) {
+        console.error('Error converting _id to string:', error);
+        return {
+          ...product,
+          _id: null // Или другое значение по умолчанию, если преобразование не удалось
+        };
+      }
+    });
 
     return {
       statusCode: 200,
