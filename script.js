@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error fetching products:', error);
             // Обработка ошибки (например, отображение сообщения об ошибке)
+            alert('Failed to load products. Please try again later.');
         }
     }
 
@@ -118,20 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             } catch (error) {
                 console.error('Error adding product:', error);
+                alert('Failed to add product. Please try again later.');
             }
-
-            try {
-                const response = await fetch('/.netlify/functions/products');
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    products = await response.json();
-    renderProducts(products);
-} catch (error) {
-    console.error('Error fetching products:', error);
-    // Отобразите сообщение об ошибке пользователю
-    alert('Failed to load products. Please try again later.');
-}
         });
     }
 
@@ -187,29 +176,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 //  Получаем ID продукта
                 const productId = product._id;
 
-                const response = await fetch(`/.netlify/functions/update-product?id=${productId}`, {
+                const response = await fetch(`/.netlify/functions/update-product?id=${productId}`, {  // Измененный URL
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(updatedProduct)
                 });
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                
+
                 const updatedProductFromServer = await response.json();
-                
+
                 // Обновляем продукт в локальном массиве
                 const index = products.findIndex(p => p._id === product._id);
                 if (index !== -1) {
-                    products[index] = updatedProductFromServer; // Используем данные, возвращенные из API
+                    products[index] = updatedProductFromServer;
                 }
                 renderProducts(products);
                 closeModal();
             } catch (error) {
                 console.error('Error updating product:', error);
+                alert('Failed to update product. Please try again later.');
             }
         });
     }
@@ -232,19 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
           closeModal();
         } catch (error) {
           console.error('Error deleting product:', error);
+          alert('Failed to delete product. Please try again later.');
         }
-        try {
-    const response = await fetch('/.netlify/functions/products');
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    products = await response.json();
-    renderProducts(products);
-} catch (error) {
-    console.error('Error fetching products:', error);
-    // Отобразите сообщение об ошибке пользователю
-    alert('Failed to load products. Please try again later.');
-}
     }
 
     // Функция для закрытия модального окна
