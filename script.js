@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Функция для получения продуктов с сервера
     async function fetchProducts() {
         try {
+            console.log("Выполняется fetchProducts"); // Добавлено для отладки
             const response = await fetch('/.netlify/functions/products'); // Замените URL, если необходимо
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -99,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
+                console.log("Выполняется POST запрос для добавления продукта"); // Добавлено для отладки
                 const response = await fetch('/.netlify/functions/add-product', { // Вызываем add-product
                     method: 'POST',
                     headers: {
