@@ -174,25 +174,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 //  Получаем ID продукта
                 const productId = product._id;
 
-                const response = await fetch(`/.netlify/functions/update-product?id=${productId}`, {  // Измененный URL
+                const response = await fetch(`/.netlify/functions/update-product?id=${productId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(updatedProduct)
                 });
-
+                
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-
+                
                 const updatedProductFromServer = await response.json();
-
+                
                 // Обновляем продукт в локальном массиве
                 const index = products.findIndex(p => p._id === product._id);
                 if (index !== -1) {
-                    // Создаем новый объект, чтобы избежать мутации
-                    products[index] = { ...products[index], ...updatedProductFromServer };
+                    products[index] = updatedProductFromServer; // Используем данные, возвращенные из API
                 }
                 renderProducts(products);
                 closeModal();
