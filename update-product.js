@@ -16,8 +16,23 @@ exports.handler = async (event, context) => {
     const productId = event.queryStringParameters.id; // Получаем ID продукта из query parameters
     const updatedProduct = JSON.parse(event.body); // Получаем данные для обновления из тела запроса
 
+    let objectId;
+    try {
+      objectId = new ObjectId(productId); // Используем ObjectId для поиска по _id
+    } catch (error) {
+      console.error('Invalid product ID:', productId);
+      return {
+        statusCode: 400, // Bad Request
+        body: JSON.stringify({ message: 'Invalid product ID' }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      };
+    }
+
     const result = await collection.updateOne(
-      { _id: new ObjectId(productId) }, // Используем ObjectId для поиска по _id
+      { _id: objectId }, // Используем ObjectId для поиска по _id
       { $set: updatedProduct } // Обновляем поля
     );
 
@@ -26,14 +41,20 @@ exports.handler = async (event, context) => {
     }
 
     // Получаем обновленный продукт из базы данных
-    const updatedProductFromDB = await collection.findOne({ _id: new ObjectId(productId) });
+    const updatedProductFromDB = await collection.findOne({ _id: objectId });
+
+    // Преобразуем _id в строку
+    const updatedProductWithStringId = {
+      ...updatedProductFromDB,
+      _id: updatedProductFromDB._id.toString()
+    };
 
     return {
       statusCode: 200,
-      body: JSON.stringify(updatedProductFromDB), // Возвращаем обновленный продукт
+      body: JSON.stringify(updatedProductWithStringId), // Возвращаем обновленный продукт
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "*"
       }
     };
   } catch (error) {
@@ -43,7 +64,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: 'Failed to update product' }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "*"
       }
     };
   } finally {
