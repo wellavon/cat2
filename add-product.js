@@ -19,9 +19,15 @@ exports.handler = async (event, context) => {
     // Получаем добавленный продукт по ID
     const insertedProduct = await collection.findOne({ _id: result.insertedId });
 
+    // Преобразуем _id в строку
+    const insertedProductWithStringId = {
+      ...insertedProduct,
+      _id: insertedProduct._id.toString()
+    };
+
     return {
       statusCode: 200,
-      body: JSON.stringify(insertedProduct),
+      body: JSON.stringify(insertedProductWithStringId),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
