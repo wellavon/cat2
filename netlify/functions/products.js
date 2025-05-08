@@ -35,17 +35,21 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(productsWithStringId),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "http://koshka-privereda.ru", // Замените "*" на ваш домен
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Разрешенные методы
+        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
       }
     };
   } catch (error) {
-    console.error('Error retrieving products:', error);
+    console.error("Error in products function:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to retrieve products', error: error.message }),
+      body: JSON.stringify({ error: "Failed to fetch products" }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "http://koshka-privereda.ru", // Замените "*" на ваш домен
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Разрешенные методы
+        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
       }
     };
   } finally {
