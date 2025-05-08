@@ -9,5 +9,3 @@
   functionsPort = 8888
   autoOpenBrowser = false # Чтобы браузер не открывался автоматически
 
-  [[plugins]]
-  package = "@netlify/plugin-functions-install-core"
