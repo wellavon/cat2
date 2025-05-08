@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 204,
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Max-Age": "86400"
@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: 'Method Not Allowed' }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
@@ -53,7 +53,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Product ID is required' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -70,7 +70,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Invalid product ID' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -88,7 +88,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Product not found' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -103,7 +103,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Failed to retrieve updated product from database' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -120,7 +120,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(updatedProductWithStringId),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
@@ -132,7 +132,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: 'Failed to update product', error: error.message }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
