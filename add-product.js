@@ -37,7 +37,7 @@ exports.handler = async (event, context) => {
     console.error('Error adding product:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to add product' }),
+      body: JSON.stringify({ message: 'Failed to add product', error: error.message }),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production

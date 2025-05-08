@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
     console.error('Error retrieving products:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to retrieve products' }),
+      body: JSON.stringify({ message: 'Failed to retrieve products', error: error.message }),
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production

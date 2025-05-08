@@ -3,5 +3,5 @@
   publish = "."
 
 [dev]
-port = 4000
+port = 4001
 functionsPort = 8888
