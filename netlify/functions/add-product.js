@@ -6,16 +6,16 @@ const dbName = process.env.MONGODB_DB;
 exports.handler = async (event, context) => {
   let client;
 
-  // Обработка OPTIONS запроса (CORS preflight)
+  // Handle OPTIONS request (CORS preflight)
   if (event.httpMethod === "OPTIONS") {
-    console.log("Handling OPTIONS request"); // Логгирование
+    console.log("Handling OPTIONS request");
     return {
-      statusCode: 204, // 204 No Content для OPTIONS запроса
+      statusCode: 204,
       headers: {
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Max-Age": "86400" // Кэширование preflight запроса на 24 часа (в секундах)
+        "Access-Control-Max-Age": "86400"
       },
       body: ""
     };
@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
     const db = client.db(dbName);
     const collection = db.collection('products');
 
-    if (event.httpMethod === "POST") { // Проверка, что это POST запрос
+    if (event.httpMethod === "POST") {
       const product = JSON.parse(event.body);
 
       const result = await collection.insertOne(product);
@@ -50,24 +50,23 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(insertedProductWithStringId),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
-    } else { // Если не POST, возвращаем 405
+    } else {
       return {
         statusCode: 405,
         body: JSON.stringify({ message: "Method Not Allowed" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
     }
-
   } catch (error) {
     console.error('Error adding product:', error);
     return {
@@ -75,7 +74,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: 'Failed to add product', error: error.message }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
