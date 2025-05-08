@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchProducts() {
         try {
             console.log("Выполняется fetchProducts"); // Добавлено для отладки
-            const response = await fetch('/.netlify/functions/products'); // Замените URL, если необходимо
+            const response = await fetch('https://koshka-privereda.ru/.netlify/functions/products'); // Замените URL, если необходимо
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       console.log("Выполняется POST запрос для добавления продукта"); // Добавлено для отладки
-      const response = await fetch('/.netlify/functions/add-product', { // Вызываем add-product
+      const response = await fetch('https://koshka-privereda.ru/.netlify/functions/add-product', { // Вызываем add-product
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 //  Получаем ID продукта
                 const productId = product._id;
 
-                const response = await fetch(`/.netlify/functions/update-product?id=${productId}`, {  // Измененный URL
+                const response = await fetch(`https://koshka-privereda.ru/.netlify/functions/update-product?id=${productId}`, {  // Измененный URL
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function deleteProduct(product) {
         try {
           const productId = product._id;
-          const response = await fetch(`/.netlify/functions/delete-product?id=${productId}`, {
+          const response = await fetch(`https://koshka-privereda.ru/.netlify/functions/delete-product?id=${productId}`, {
             method: 'DELETE'
           });
 
