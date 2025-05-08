@@ -5,13 +5,12 @@ const dbName = process.env.MONGODB_DB;
 
 exports.handler = async (event, context) => {
   let client;
-
   try {
-    const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ!
-});
+    client = new MongoClient(uri, { // Убираем const
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ! УДАЛИТЬ ПЕРЕД ДЕПЛОЕМ В PRODUCTION
+    });
     await client.connect();
 
     const db = client.db(dbName);
@@ -25,7 +24,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Product ID is required' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "DELETE, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -42,7 +41,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Invalid product ID' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "DELETE, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -57,7 +56,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: 'Product not found' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "http://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "DELETE, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -69,30 +68,26 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: "Product deleted successfully" }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://koshka-privereda.ru",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
+        }
+      };
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        return {
+          statusCode: 500, // Internal Server Error
+          body: JSON.stringify({ message: 'Failed to delete product', error: error.message }),
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+            "Access-Control-Allow-Methods": "DELETE, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type"
+          }
+        };
+      } finally {
+        if (client) {
+          await client.close();
+        }
       }
     };
-  } catch (error) {
-    console.error('Error deleting product:', error);
-    return {
-      statusCode: 500, // Internal Server Error
-      body: JSON.stringify({ message: 'Failed to delete product', error: error.message }),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://koshka-privereda.ru",
-        "Access-Control-Allow-Methods": "DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type"
-      }
-    };
-  } finally {
-    if (client) {
-      try {
-        await client.close(); // Добавим обработку ошибок при закрытии соединения
-      } catch (closeError) {
-        console.error('Error closing MongoDB connection:', closeError);
-      }
-    }
-  }
-};
