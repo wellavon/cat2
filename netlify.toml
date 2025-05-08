@@ -1,7 +1,11 @@
 [build]
   functions = "netlify/functions"
-  publish = "."
+  publish = "cat2" # Укажите папку, содержащую ваш HTML, CSS и JS
 
 [dev]
-port = 4001
-functionsPort = 8888
+  port = 4001
+  functionsPort = 8888
+  autoOpenBrowser = false # Чтобы браузер не открывался автоматически
+
+[functions]
+  included_files = ["./node_modules/mongodb/**"] #  Укажите зависимости для функций
