@@ -6,11 +6,39 @@ const dbName = process.env.MONGODB_DB;
 exports.handler = async (event, context) => {
   let client;
 
+  // Обработка OPTIONS запроса (CORS preflight)
+  if (event.httpMethod === "OPTIONS") {
+    console.log("Handling OPTIONS request");
+    return {
+      statusCode: 204, // No Content
+      headers: {
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Methods": "PUT, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "86400" // Кэширование
+      },
+      body: ""
+    };
+  }
+
+    // Проверка HTTP метода
+    if (event.httpMethod !== "PUT") {
+        return {
+            statusCode: 405, // Method Not Allowed
+            body: JSON.stringify({ message: 'Method Not Allowed' }),
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+                "Access-Control-Allow-Methods": "PUT, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            }
+        };
+    }
+
   try {
-    client = new MongoClient(uri, { // Убираем const
+    client = new MongoClient(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ! УДАЛИТЬ ПЕРЕД ДЕПЛОЕМ В PRODUCTION
     });
     await client.connect();
 
@@ -44,7 +72,7 @@ exports.handler = async (event, context) => {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT для обновления
+          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
@@ -62,25 +90,27 @@ exports.handler = async (event, context) => {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT для обновления
+          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
     }
+
     const updatedProductFromDB = await collection.findOne({ _id: objectId });
 
-    if (!updatedProductFromDB) { // Проверка, что продукт действительно найден после обновления
+    if (!updatedProductFromDB) { // Проверка, что продукт найден
       return {
-        statusCode: 500, // Internal Server Error - Unexpected state
+        statusCode: 500, // Internal Server Error
         body: JSON.stringify({ message: 'Failed to retrieve updated product from database' }),
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT для обновления
+          "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
     }
+
     const updatedProductWithStringId = {
       ...updatedProductFromDB,
       _id: updatedProductFromDB._id.toString()
@@ -92,10 +122,11 @@ exports.handler = async (event, context) => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-        "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT для обновления
+        "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
     };
+
   } catch (error) {
     console.error('Error updating product:', error);
     return {
@@ -104,7 +135,7 @@ exports.handler = async (event, context) => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-        "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT для обновления
+        "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
     };
