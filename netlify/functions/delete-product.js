@@ -5,18 +5,47 @@ const dbName = process.env.MONGODB_DB;
 
 exports.handler = async (event, context) => {
   let client;
+
+  // Обработка OPTIONS запроса (CORS preflight)
+  if (event.httpMethod === "OPTIONS") {
+    console.log("Handling OPTIONS request");
+    return {
+      statusCode: 204, // No Content для OPTIONS
+      headers: {
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Methods": "DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Max-Age": "86400" // Кэширование на 24 часа
+      },
+      body: ""
+    };
+  }
+
   try {
-    client = new MongoClient(uri, { // Убираем const
+    client = new MongoClient(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ! УДАЛИТЬ ПЕРЕД ДЕПЛОЕМ В PRODUCTION
     });
     await client.connect();
 
     const db = client.db(dbName);
     const collection = db.collection('products');
 
-    const productId = event.queryStringParameters.id; // Получаем ID продукта из query parameters
+    //  Убедитесь, что запрос использует DELETE метод.
+    if (event.httpMethod !== "DELETE") {
+      return {
+        statusCode: 405, // Method Not Allowed
+        body: JSON.stringify({ message: 'Method Not Allowed' }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+          "Access-Control-Allow-Methods": "DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type"
+        }
+      };
+    }
+
+    const productId = event.queryStringParameters.id;
 
     if (!productId) {
       return {
@@ -33,7 +62,7 @@ exports.handler = async (event, context) => {
 
     let objectId;
     try {
-      objectId = new ObjectId(productId); // Используем ObjectId для поиска по _id
+      objectId = new ObjectId(productId);
     } catch (error) {
       console.error('Invalid product ID:', productId);
       return {
@@ -71,23 +100,23 @@ exports.handler = async (event, context) => {
         "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
-        }
-      };
-    } catch (error) {
-        console.error('Error deleting product:', error);
-        return {
-          statusCode: 500, // Internal Server Error
-          body: JSON.stringify({ message: 'Failed to delete product', error: error.message }),
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-            "Access-Control-Allow-Methods": "DELETE, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type"
-          }
-        };
-      } finally {
-        if (client) {
-          await client.close();
-        }
       }
     };
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return {
+      statusCode: 500, // Internal Server Error
+      body: JSON.stringify({ message: 'Failed to delete product', error: error.message }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+        "Access-Control-Allow-Methods": "DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    };
+  } finally {
+    if (client) {
+      await client.close();
+    }
+  }
+};
