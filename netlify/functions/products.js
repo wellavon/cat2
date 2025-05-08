@@ -1,3 +1,4 @@
+// netlify/functions/products.js
 const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGODB_URI;
@@ -5,6 +6,7 @@ const dbName = process.env.MONGODB_DB;
 
 exports.handler = async (event, context) => {
   let client;
+  const allowedOrigin = process.env.NODE_ENV === 'production' ? 'https://koshka-privereda.ru' : '*';
 
   // Handle OPTIONS request (CORS preflight)
   if (event.httpMethod === "OPTIONS") {
@@ -12,7 +14,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 204,
       headers: {
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+        "Access-Control-Allow-Origin": allowedOrigin,
         "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Max-Age": "86400"
@@ -22,10 +24,7 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    client = new MongoClient(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    client = new MongoClient(uri);
     await client.connect();
 
     const db = client.db(dbName);
@@ -54,7 +53,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(productsWithStringId),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": allowedOrigin,
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -65,7 +64,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: "Method Not Allowed" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": allowedOrigin,
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -78,8 +77,8 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: "Failed to fetch products" }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Origin": allowedOrigin,
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
     };
@@ -89,4 +88,3 @@ exports.handler = async (event, context) => {
     }
   }
 };
-
