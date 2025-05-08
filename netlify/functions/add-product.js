@@ -30,7 +30,9 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(insertedProductWithStringId),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "http://koshka-privereda.ru", // Замените "*" на ваш домен
+        "Access-Control-Allow-Methods": "POST, OPTIONS", // Разрешенные методы
+        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
       }
     };
   } catch (error) {
@@ -40,7 +42,9 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ message: 'Failed to add product', error: error.message }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*" // ВНИМАНИЕ: только для разработки! Укажите конкретный домен в production
+        "Access-Control-Allow-Origin": "http://koshka-privereda.ru", // Замените "*" на ваш домен
+        "Access-Control-Allow-Methods": "POST, OPTIONS", // Разрешенные методы
+        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
       }
     };
   } finally {
