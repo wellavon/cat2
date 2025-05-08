@@ -1,6 +1,7 @@
 [build]
   functions = "netlify/functions"
   publish = "." # Укажите папку, содержащую ваш HTML, CSS и JS
+  node_version = "18"
 
 [dev]
   port = 4001
