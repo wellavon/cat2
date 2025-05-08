@@ -4,45 +4,76 @@ const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB;
 
 exports.handler = async (event, context) => {
-  let client; // Объявляем client один раз
+  let client;
+
+    // Обработка OPTIONS запроса (CORS preflight)
+    if (event.httpMethod === "OPTIONS") {
+        console.log("Handling OPTIONS request"); // Логгирование
+        return {
+            statusCode: 204, // 204 No Content для OPTIONS запроса
+            headers: {
+                "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+                "Access-Control-Allow-Methods": "GET, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Max-Age": "86400" // Кэширование preflight запроса на 24 часа (в секундах)
+            },
+            body: ""
+        };
+    }
+
+
   try {
-    client = new MongoClient(uri, { // Убираем const
+    client = new MongoClient(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      // tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ! УДАЛИТЬ ПЕРЕД ДЕПЛОЕМ В PRODUCTION
     });
     await client.connect();
 
     const db = client.db(dbName);
     const collection = db.collection('products');
-    const products = await collection.find({}).toArray();
 
-    // Convert _id ObjectId to string for frontend compatibility
-    const productsWithStringId = products.map(product => {
-      try {
-        return {
-          ...product,
-          _id: product._id.toString()
-        };
-      } catch (error) {
-        console.error('Error converting _id to string:', error);
-        return {
-          ...product,
-          _id: null // Или другое значение по умолчанию, если преобразование не удалось
-        };
-      }
-    });
+      if (event.httpMethod === "GET") {
+          const products = await collection.find({}).toArray();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(productsWithStringId),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Используем HTTPS
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Разрешенные методы
-        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
+          const productsWithStringId = products.map(product => {
+              try {
+                  return {
+                      ...product,
+                      _id: product._id.toString()
+                  };
+              } catch (error) {
+                  console.error('Error converting _id to string:', error);
+                  return {
+                      ...product,
+                      _id: null
+                  };
+              }
+          });
+
+          return {
+              statusCode: 200,
+              body: JSON.stringify(productsWithStringId),
+              headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+                  "Access-Control-Allow-Methods": "GET, OPTIONS",
+                  "Access-Control-Allow-Headers": "Content-Type"
+              }
+          };
+      } else {
+          return {
+              statusCode: 405,
+              body: JSON.stringify({ message: "Method Not Allowed" }),
+              headers: {
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+                  "Access-Control-Allow-Methods": "GET, OPTIONS",
+                  "Access-Control-Allow-Headers": "Content-Type"
+              }
+          };
       }
-    };
+
+
   } catch (error) {
     console.error("Error in products function:", error);
     return {
@@ -50,9 +81,9 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: "Failed to fetch products" }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Используем HTTPS
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Разрешенные методы
-        "Access-Control-Allow-Headers": "Content-Type" // Разрешенные заголовки
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
       }
     };
   } finally {
