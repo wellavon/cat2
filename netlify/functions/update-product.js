@@ -7,7 +7,11 @@ exports.handler = async (event, context) => {
   let client;
 
   try {
-    client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  tlsAllowInvalidCertificates: true // ТОЛЬКО ДЛЯ ЛОКАЛЬНОЙ ОТЛАДКИ!
+});
     await client.connect();
 
     const db = client.db(dbName);
