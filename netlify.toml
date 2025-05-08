@@ -7,6 +7,3 @@
   port = 4001
   functionsPort = 8888
   autoOpenBrowser = false # Чтобы браузер не открывался автоматически
-
-[functions]
-  included_files = ["./node_modules/mongodb/**"] #  Укажите зависимости для функций
