@@ -1,10 +1,13 @@
 [build]
-  functions = "netlify/functions"
-  publish = "." # Или "public", если ваш index.html находится в папке public
-  node_version = "18"
-  command = "npm install"  # Или "yarn install", если вы используете Yarn, и добавьте build, если он нужен
+    functions = "netlify/functions"
+    publish = "." # Или "public", если ваш index.html находится в папке public
+    node_version = "18"
+    command = "cd netlify/functions && npm install" # Измените эту строку
 
 [dev]
   port = 4001
   functionsPort = 8888
   autoOpenBrowser = false # Чтобы браузер не открывался автоматически
+
+  [[plugins]]
+  package = "@netlify/plugin-functions-install-core"
