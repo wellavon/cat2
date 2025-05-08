@@ -6,34 +6,33 @@ const dbName = process.env.MONGODB_DB;
 exports.handler = async (event, context) => {
   let client;
 
-  // Обработка OPTIONS запроса (CORS preflight)
+  // Handle OPTIONS request (CORS preflight)
   if (event.httpMethod === "OPTIONS") {
     console.log("Handling OPTIONS request");
     return {
-      statusCode: 204, // No Content
+      statusCode: 204,
       headers: {
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru", // Или "*" для разработки
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Max-Age": "86400" // Кэширование
+        "Access-Control-Max-Age": "86400"
       },
       body: ""
     };
   }
 
-    // Проверка HTTP метода
-    if (event.httpMethod !== "PUT") {
-        return {
-            statusCode: 405, // Method Not Allowed
-            body: JSON.stringify({ message: 'Method Not Allowed' }),
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-                "Access-Control-Allow-Methods": "PUT, OPTIONS",
-                "Access-Control-Allow-Headers": "Content-Type"
-            }
-        };
-    }
+  if (event.httpMethod !== "PUT") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ message: 'Method Not Allowed' }),
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "PUT, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }
+    };
+  }
 
   try {
     client = new MongoClient(uri, {
@@ -50,11 +49,11 @@ exports.handler = async (event, context) => {
 
     if (!productId) {
       return {
-        statusCode: 400, // Bad Request
+        statusCode: 400,
         body: JSON.stringify({ message: 'Product ID is required' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -67,12 +66,12 @@ exports.handler = async (event, context) => {
     } catch (error) {
       console.error('Invalid product ID:', productId);
       return {
-        statusCode: 400, // Bad Request
+        statusCode: 400,
         body: JSON.stringify({ message: 'Invalid product ID' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
@@ -85,12 +84,12 @@ exports.handler = async (event, context) => {
 
     if (result.modifiedCount === 0) {
       return {
-        statusCode: 404, // Not Found
+        statusCode: 404,
         body: JSON.stringify({ message: 'Product not found' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
-          "Access-Control-Allow-Methods": "PUT, OPTIONS", // Используем PUT
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
       };
@@ -98,13 +97,13 @@ exports.handler = async (event, context) => {
 
     const updatedProductFromDB = await collection.findOne({ _id: objectId });
 
-    if (!updatedProductFromDB) { // Проверка, что продукт найден
+    if (!updatedProductFromDB) {
       return {
-        statusCode: 500, // Internal Server Error
+        statusCode: 500,
         body: JSON.stringify({ message: 'Failed to retrieve updated product from database' }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+          "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "PUT, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -121,20 +120,19 @@ exports.handler = async (event, context) => {
       body: JSON.stringify(updatedProductWithStringId),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
     };
-
   } catch (error) {
     console.error('Error updating product:', error);
     return {
-      statusCode: 500, // Internal Server Error
+      statusCode: 500,
       body: JSON.stringify({ message: 'Failed to update product', error: error.message }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "PUT, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
@@ -145,3 +143,4 @@ exports.handler = async (event, context) => {
     }
   }
 };
+
