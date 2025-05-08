@@ -2,7 +2,6 @@
   "name": "koshka",
   "version": "1.0.0",
   "description": "Backend server for koshka project",
-  "main": "script.js",
   "scripts": {
     "start": "node server.js"
   },
