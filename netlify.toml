@@ -1,6 +1,6 @@
 [build]
   functions = "netlify/functions"
-  publish = "koshka" # Укажите папку, содержащую ваш HTML, CSS и JS
+  publish = "." # Укажите папку, содержащую ваш HTML, CSS и JS
 
 [dev]
   port = 4001
