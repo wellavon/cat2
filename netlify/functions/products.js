@@ -12,7 +12,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 204,
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Max-Age": "86400"
@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify(productsWithStringId),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -65,7 +65,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({ message: "Method Not Allowed" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
         }
@@ -78,7 +78,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({ error: "Failed to fetch products" }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": "https://koshka-privereda.ru",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type"
       }
