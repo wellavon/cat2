@@ -5,39 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Кошка-привереда</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="apple-touch-icon.png" type="image/png">
-
+    <link rel="icon" href="cat-paw.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Lobster+Two:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Comfortaa:wght@400;700&family=Lobster+Two:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-container">
+            <div class="logo">
+                <img src="cat-icon.png" alt="Логотип кошки">
+                <h1>Кошка-привереда</h1>
+            </div>
+            <div class="auth-form active" id="login-form">
+                <h2>Вход</h2>
+                <input type="text" id="login-username" placeholder="Имя пользователя">
+                <input type="password" id="login-password" placeholder="Пароль">
+                <button id="login-btn">Войти</button>
+                <p class="auth-switch">Нет аккаунта? <a href="#" id="show-register">Зарегистрироваться</a></p>
+            </div>
+            <div class="auth-form" id="register-form">
+                <h2>Регистрация</h2>
+                <input type="text" id="register-username" placeholder="Имя пользователя" autocomplete="username">
+                <input type="password" id="register-password" placeholder="Пароль" autocomplete="new-password">
+                <button id="register-btn">Зарегистрироваться</button>
+                <p class="auth-switch">Уже есть аккаунт? <a href="#" id="show-login">Войти</a></p>
+            </div>
+        </div>
+    </div>
 
-    <header>
-        <h1>Кошка-привереда</h1>
-        <p class="quote">"Это я не ем, я не козел"</p>
-    </header>
+    <div id="app">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <img src="cat-icon.png" alt="Логотип кошки">
+                    <h1>Кошка-привереда</h1>
+                </div>
+                <p class="quote">"Это я не ем, я не козел"</p>
+                <button id="logout-btn" class="logout-btn">Выйти</button>
+            </div>
+        </header>
 
-    <section id="buttons">
-        <button id="description-button">Описание пометок</button>
-        <button id="add-product-button">Добавить продукт</button>
-    </section>
+        <main>
+            <section class="user-panel">
+                <div class="profile">
+                    <img src="cat-avatar.webp" alt="Аватар" id="user-avatar" style="cursor:pointer;">
+                    <input type="file" id="avatar-upload" accept="image/*" style="display:none;">
+                    <div class="profile-info">
+                        <h2 id="username-display">Имя пользователя</h2>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-value" id="friends-count">0</span>
+                                <span class="stat-label">Друзей</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" id="products-count">0</span>
+                                <span class="stat-label">Продуктов</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <section id="search-bar">
-        <input type="text" id="search-input" placeholder="Поиск продукта...">
-    </section>
+                <div class="actions">
+                    <button id="description-button" class="action-btn">
+                        <span>О пометках</span>
+                    </button>
+                    <button id="add-product-button" class="action-btn">
+                        <span>Добавить продукт</span>
+                    </button>
+                    <button id="add-friend-button" class="action-btn">
+                        <span>Друзья</span>
+                    </button>
+                </div>
+            </section>
 
-    <section id="product-list">
-        <ul id="products">
-            <!-- Продукты будут добавлены сюда через JavaScript -->
-        </ul>
-    </section>
+            <section class="search-section">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Поиск продукта...">
+                    <img src="search-icon.png" alt="Поиск" class="search-icon">
+                </div>
+            </section>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modal-body">
-                <!-- Контент модального окна будет добавлен сюда через JavaScript -->
+            <section class="content-section">
+                <div class="products-container" id="products-container">
+                    <h2>Мои продукты</h2>
+                    <ul id="products">
+                        <!-- Продукты будут добавлены сюда через JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="friends-container" id="friends-container">
+                <div class="friends-header">
+                    <h2>Мои друзья</h2>
+                <div class="friend-search-wrapper">
+                    <div class="friend-search-container" id="friend-search-container">
+                        <input type="text" id="friend-search" placeholder="Найти друзей">
+                        <ul id="search-results">
+                            <!-- Результаты поиска -->
+                        </ul>
+                    </div>
+                    <button id="close-friends-button" class="close" style="display:none;" title="Закрыть список друзей">&times;</button>
+                </div>
+                </div>
+                    <ul id="friends">
+                        <!-- Друзья будут добавлены сюда -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="modal-body">
+                    <!-- Контент модального окна будет добавлен сюда через JavaScript -->
+                </div>
             </div>
         </div>
     </div>
@@ -45,4 +127,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
